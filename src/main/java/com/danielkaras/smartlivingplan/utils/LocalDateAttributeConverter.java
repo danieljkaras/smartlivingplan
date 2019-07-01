@@ -1,4 +1,4 @@
-package com.danielkaras.smartlivingplan.control;
+package com.danielkaras.smartlivingplan.utils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

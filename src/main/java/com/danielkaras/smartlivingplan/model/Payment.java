@@ -1,6 +1,6 @@
 package com.danielkaras.smartlivingplan.model;
 
-import com.danielkaras.smartlivingplan.control.LocalDateAttributeConverter;
+import com.danielkaras.smartlivingplan.utils.LocalDateAttributeConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

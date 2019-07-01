@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration Form</title>
+    <div th:insert="fragments :: header"></div>
+</head>
+<body>
+
+
+<div class="container">
+    <form th:action="@{/registration}" th:object="${user}" class="form-horizontal" autocomplete="off" method="post">
+        <div class="text-center mb-4">
+            <h2 class="lead">Registration Form</h2>
+        </div>
+
+        <div class="form-label-group col-sm-8 mx-auto">
+            <label>First Name</label>
+            <input type="text" id="firstName" class="form-control" placeholder="First Name" th:field="*{firstName}">
+            <p th:if="${#fields.hasErrors('firstName')}" th:error="*{firstName}" class="error">Your first name should
+                has more than 3 letters and should not be blank.</p>
+            <small class="form-text text-muted">Please enter your first name.</small>
+            <br>
+        </div>
+
+        <div class="form-label-group col-sm-8 mx-auto">
+            <label>Last Name</label>
+            <input type="text" id="lastName" class="form-control" placeholder="Last Name" th:field="*{lastName}">
+            <p th:if="${#fields.hasErrors('lastName')}" th:error="*{lastName}" class="error">Your last name should has
+                more than 3 letters and should not be blank.</p>
+            <small class="form-text text-muted">Please enter your last name.</small>
+            <br>
+        </div>
+
+        <div class="form-label-group col-sm-8 mx-auto">
+            <label>Email</label>
+            <input type="text" id="email" class="form-control" placeholder="Email" th:field="*{email}">
+            <p th:if="${#fields.hasErrors('email')}" th:error="*{email}" class="error">Your mail should contains @.</p>
+            <small class="form-text text-muted">Please enter your email.</small>
+            <br>
+        </div>
+
+        <div class="form-label-group col-sm-8 mx-auto">
+            <label>Password</label>
+            <input type="password" id="password" class="form-control" placeholder="Password" th:field="*{password}">
+            <p th:if="${#fields.hasErrors('email')}" th:error="*{email}" class="error">Your password should has capital
+                letter and number.</p>
+            <small class="form-text text-muted">Please enter password with minimum one capital letter and one number.
+            </small>
+            <br>
+        </div>
+
+        <div class="container">
+            <div class="col-sm-8 mx-auto">
+                <button type="submit" class="btn btn-primary btn-block">Register User</button>
+                <br>
+            </div>
+        </div>
+
+        <span th:utext="${successMessage}"></span>
+    </form>
+
+    <div class="container">
+        <div class="form-label-group">
+            <form th:action="@{/login}" method="get">
+                <div class="col-sm-8 mx-auto">
+                    <button class="btn btn-primary btn-warning btn-block" type="submit">Back to Login Page</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:insert="fragments :: footer"></div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:insert="fragments :: header"></div>
+    <div th:insert="fragments :: navigationbar"></div>
+</head>
+
+<body>
+<div class="container">
+    <div class="row" th:marginheight="20px">
+        <h5 class="lead">List of Categories: </h5>
+    </div>
+    <div class="row" th:marginheight="20px">
+        <table class="table table-striped table-light">
+            <thead class="thead-light" style="font-size: 100%">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Is Income Category</th>
+                <th scope="col">Is Payment Category</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categories}">
+                <th scope="row" th:utext="${category.id}">...</th>
+                <th th:utext="${category.name}">...</th>
+                <th th:utext="${category.income}">...</th>
+                <th th:utext="${category.payment}">...</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

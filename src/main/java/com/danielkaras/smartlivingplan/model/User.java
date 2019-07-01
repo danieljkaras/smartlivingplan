@@ -3,8 +3,9 @@ package com.danielkaras.smartlivingplan.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
-
+import java.util.Set;
 
 @Entity
 @Table(name = "tabuser")
@@ -14,22 +15,31 @@ public class User extends AuditModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String login;
+    @Column(name = "firstname")
+    @NotEmpty(message = "Please enter your first name")
+    private String firstName;
 
-    @NotBlank(message = "Email is mandatory")
+    @Column(name = "lastname")
+    @NotEmpty(message = "Please enter your last name")
+    private String lastName;
+
+    @NotBlank(message = "Please enter your email")
     @Email
     private String email;
 
-    @NotBlank(message = "Password is mandatory")
+    @NotBlank(message = "Please enter your password")
     private String password;
 
-    private Integer familyId;
-
-    @Column(name = "ismemberoffamily")
-    private Boolean isMemberOfFamily;
+    private int active;
 
     @Column(name = "isadmin")
     private Boolean isAdmin;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "reluserrole",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "idrole"))
+    private Set<Role> roles;
 
     @ManyToMany(mappedBy = "users")
     private List<Category> categories;
@@ -48,12 +58,20 @@ public class User extends AuditModel {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -72,20 +90,12 @@ public class User extends AuditModel {
         this.password = password;
     }
 
-    public Integer getFamilyId() {
-        return familyId;
+    public int getActive() {
+        return active;
     }
 
-    public void setFamilyId(Integer familyId) {
-        this.familyId = familyId;
-    }
-
-    public Boolean getMemberOfFamily() {
-        return isMemberOfFamily;
-    }
-
-    public void setMemberOfFamily(Boolean memberOfFamily) {
-        isMemberOfFamily = memberOfFamily;
+    public void setActive(int active) {
+        this.active = active;
     }
 
     public Boolean getAdmin() {
@@ -94,6 +104,14 @@ public class User extends AuditModel {
 
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public List<Category> getCategories() {
@@ -116,13 +134,15 @@ public class User extends AuditModel {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", familyId=" + familyId +
-                ", isMemberOfFamily=" + isMemberOfFamily +
+                ", active=" + active +
                 ", isAdmin=" + isAdmin +
+                ", roles=" + roles +
                 ", categories=" + categories +
+                ", payments=" + payments +
                 '}';
     }
 }

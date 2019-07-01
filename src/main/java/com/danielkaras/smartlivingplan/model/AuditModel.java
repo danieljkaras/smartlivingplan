@@ -1,6 +1,6 @@
 package com.danielkaras.smartlivingplan.model;
 
-import com.danielkaras.smartlivingplan.control.LocalDateTimeAttributeConverter;
+import com.danielkaras.smartlivingplan.utils.LocalDateTimeAttributeConverter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

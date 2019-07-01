@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -15,13 +16,14 @@ public class Category extends AuditModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
 
     @Column(name = "ispayment")
-    private Boolean isPayment;
+    private boolean isPayment;
 
     @Column(name = "isincome")
-    private Boolean isIncome;
+    private boolean isIncome;
 
     @OneToMany(mappedBy = "category")
     @JsonIgnore

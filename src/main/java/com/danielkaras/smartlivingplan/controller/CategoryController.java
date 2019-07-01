@@ -1,63 +1,54 @@
 package com.danielkaras.smartlivingplan.controller;
 
-import com.danielkaras.smartlivingplan.exception.ResourceNotFoundException;
 import com.danielkaras.smartlivingplan.model.Category;
 import com.danielkaras.smartlivingplan.repository.CategoryRepository;
-import com.danielkaras.smartlivingplan.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
-@RestController
+@Controller
 public class CategoryController {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private CategoryRepository categoryRepository;
 
-    @PostMapping("/category/{userId}")
-    public Category createNewCategory(@Valid @RequestBody Category category, @PathVariable Long userId) {
-        logger.info("adding new category: {} for user {}", category.getName(), userId);
-        checkIfUserExist(userId);
-
-        return userRepository.findById(userId)
-                .map(user -> {
-                    category.setUsers(Collections.singletonList(user));
-                    category.setPayment(category.isPayment());
-                    category.setIncome(category.isIncome());
-                    logger.info("Category added to repository: {} for user: {}", category.toString(), category.getUsers());
-                    return categoryRepository.save(category);
-                }).orElseThrow(() -> new ResourceNotFoundException("User with id: " + userId + " is not found!!!"));
+    @RequestMapping(value = "/addCategory", method = RequestMethod.GET)
+    public ModelAndView showAddCategoryForm() {
+        ModelAndView category = new ModelAndView("addCategoryForm");
+        category.addObject("category", new Category());
+        return category;
     }
 
-    @GetMapping("/category/{userId}")
-    @Transactional
-    public List<Category> findCategoriesForUser(@PathVariable Long userId) {
-        logger.info("searching categories for user with id: {}", userId);
+    @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
+    public ModelAndView createCategoryForUser(@Valid Category category,
+                                              BindingResult bindingResult) {
+        logger.info("Received form data. Category name: {}, isPaymentCategory: {}, isIncomeCategory: {}",
+                category.getName(), category.isPayment(), category.isIncome());
+        logger.info("Persist category data to DB.");
+        categoryRepository.save(category);
 
-        checkIfUserExist(userId);
-
-        List<Category> categories = userRepository.findUserByIdEquals(userId).getCategories();
-        logger.info("Categories found for user: {} and cateogries: {}", userId,
-                categories.stream().map(Category::getName).collect(Collectors.toList()));
-
-        return categories;
-    }
-
-    private void checkIfUserExist(Long userId) {
-        if (!(userRepository.existsById(userId))) {
-            throw new ResourceNotFoundException("Sorry. User with id: " + userId + " is not exist in our system. Please check correct info!!!" );
+        if (bindingResult.hasErrors()) {
+            logger.error("There is an error with category data. Redirect to addCategory page !!!");
+            return new ModelAndView("addCategoryForm");
         }
+        logger.info("Adding category is finished with success. Redirect to: /showCategories");
+        return new ModelAndView("redirect:/showCategories");
+    }
+
+    @RequestMapping(value = "/showCategories", method = RequestMethod.GET)
+    public ModelAndView showAllMyCategories(HttpSession session) {
+        ModelAndView allCategoriesView = new ModelAndView("showCategories");
+        allCategoriesView.addObject("categories", categoryRepository.findAll());
+        return allCategoriesView;
     }
 }

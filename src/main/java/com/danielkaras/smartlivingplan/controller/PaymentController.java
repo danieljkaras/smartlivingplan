@@ -35,14 +35,14 @@ public class PaymentController {
         checkIfUserExist(userId);
         logger.info("adding new payment for user with id {}", userId);
 
-        Optional<Category> first = userRepository.findUserByIdEquals(userId)
+        Optional<Category> first = userRepository.findByIdEquals(userId)
                 .getCategories()
                 .stream()
                 .filter(category -> category.getId().equals(payment.getCategory().getId()))
                 .findFirst();
 
         payment.setCategory(first.orElse(null));
-        payment.setUsers(Collections.singletonList(userRepository.findUserByIdEquals(userId)));
+        payment.setUsers(Collections.singletonList(userRepository.findByIdEquals(userId)));
 
         logger.info("payment data saved to database: {}", payment.toString());
         return paymentRepository.save(payment);
@@ -63,7 +63,7 @@ public class PaymentController {
 
     @GetMapping("/payment/{userId}/all")
     public List<Payment> findAllPaymentsForUser(@PathVariable Long userId) {
-        List<Payment> payments = userRepository.findUserByIdEquals(userId).getPayments();
+        List<Payment> payments = userRepository.findByIdEquals(userId).getPayments();
 
         logger.info("found {} payments for user with id: {}", payments.size(), userId);
         return payments;

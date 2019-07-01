@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Smart Living Plan - Add Category</title>
+    <div th:insert="fragments :: header"></div>
+    <div th:insert="fragments :: navigationbar"></div>
+</head>
+<body>
+
+<div class="container">
+    <form class="form-signin" action="#" th:action="@{/addCategory}" th:object="${category}" method="post">
+        <div class="text-left mb4">
+            <h5 class="lead">Enter details to add category</h5>
+            <br>
+        </div>
+
+        <div class="form-label-group">
+            <label>Category</label>
+            <input type="text" id="category" class="form-control" placeholder="Category" th:field="*{name}">
+            <p th:if="${#fields.hasErrors('name')}" th:error="*{name}" class="error">Your category can not be blank.</p>
+            <small class="form-text text-muted">Please enter name for the category.</small>
+            <br>
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="isPaymentCategory" th:field="*{payment}">
+            <label class="form-check-label" for="isPaymentCategory">Payment Category</label>
+            <p th:if="${#fields.hasErrors('payment')}" th:error="*{payment}" class="error">Category Name Error</p>
+            <small class="form-text text-muted">Please pick option for the payment category.</small>
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="isIncomeCategory" th:field="*{income}">
+            <label class="form-check-label" for="isIncomeCategory">Income Category</label>
+            <p th:if="${#fields.hasErrors('income')}" th:error="*{income}" class="error">Category Name Error</p>
+            <small class="form-text text-muted">Please pick option for the income category.</small>
+            <br>
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Save My Category">
+    </form>
+</div>
+
+<div th: th:insert="fragments :: footer"></div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

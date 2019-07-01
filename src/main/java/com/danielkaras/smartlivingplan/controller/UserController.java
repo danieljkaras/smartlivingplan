@@ -26,26 +26,10 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @GetMapping("/users/family/{familyId}")
-    public List<User> showUsersWithTheSameFamilyId(@PathVariable Integer familyId){
-        logger.info("searching family members. family id is {}", familyId);
-        return userRepository.findUserByFamilyIdEquals(familyId);
-    }
-
     @PostMapping("/users")
     public User createNewUser(@Valid @RequestBody User user) {
-        logger.info("creating entry for new user. user email: {}, user login {}", user.getEmail(), user.getLogin());
+        logger.info("creating entry for new user. user email: {}", user.getEmail());
         return userRepository.save(user);
-    }
-
-    @PutMapping("/users/{userId}")
-    public User updateUser(@PathVariable Long userId, @Valid @RequestBody User userRequest) {
-        logger.info("received user request for user with id {}", userId);
-        return userRepository.findById(userId)
-                .map(user -> {
-                    setupUserValues(userRequest, user);
-                    return userRepository.save(user);
-                }).orElseThrow(() -> new ResourceNotFoundException("User with id: " + userId + " is not found!!!"));
     }
 
     @DeleteMapping("/users/{userId}")
@@ -58,15 +42,5 @@ public class UserController {
                     userRepository.delete(user);
                     return ResponseEntity.ok().build();
                 }).orElseThrow(() -> new ResourceNotFoundException("User with id: " + userId + " is not found!!!"));
-    }
-
-    private void setupUserValues(@RequestBody @Valid User userRequest, User user) {
-        logger.info("processing user request. setting new values.");
-        user.setLogin(userRequest.getLogin());
-        user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
-        user.setFamilyId(userRequest.getFamilyId());
-        user.setMemberOfFamily(userRequest.getMemberOfFamily());
-        user.setAdmin(userRequest.getAdmin());
     }
 }
